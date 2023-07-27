@@ -1,4 +1,4 @@
-import { createSSRApp } from 'vue';
+import { createApp } from 'vue';
 import Home from './Home.vue';
-const app = createSSRApp(Home);
+const app = createApp(Home);
 app.mount('#root');

@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ES5",
     "module": "CommonJS",
-    "moduleResolution": "node",
+    "moduleResolution": "Node",
+    "jsx": "preserve",
     "allowJs": true,
     "outDir": "./dist",
     "esModuleInterop": true,
@@ -18,5 +19,6 @@
     "node_modules",
     "views/**",
     "dist"
-  ]
+  ],
+  "types": ["vite/client", "vue"]
 }

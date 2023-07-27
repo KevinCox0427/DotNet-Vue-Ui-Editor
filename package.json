@@ -4,10 +4,9 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "runServer": "node dist/server.js",
+    "start": "node dist/server.js",
     "build": "tsc && vite build --mode server && vite build --mode client && sass styles:dist/public",
-    "vite": "vite build --mode server && vite build --mode client",
-    "start": "node utils/watch.js"
+    "dev": "vite"
   },
   "author": "",
   "license": "ISC",

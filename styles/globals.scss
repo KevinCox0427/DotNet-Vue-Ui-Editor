@@ -1,29 +1,24 @@
 :root {
     --body: sans-serif;
-    --dark: black;
-    --light: white;
+    --dark: rgb(59, 59, 73);
+    --light: rgb(239, 238, 246);
 }
 
 head, style, script {
     display: none;
 }
 
-html {
-    min-height: 100%;
-}
-
 body {
-    flex-grow: 1;
     overflow-x: hidden;
-    color: var(--light);
+    color: var(--dark);
+    background-color: var(--light);
     font-family: var(--body);
     font-weight: 400;
-    background-color: var(--dark);
     margin: 0;
 }
 
 #root {
-    flex-grow: 1;
+    min-height: 100%;
 }
 
 * {
@@ -31,9 +26,10 @@ body {
     flex-direction: column;
 }
 
-p, a, span, button, input, select, textarea, label, h1, h2, h3, h4, h5, h6 {
+p, a, span, button, input, select, textarea, label, h1, h2, h3, h4, h5, h6, i {
     height: fit-content;
     width: fit-content;
+    color: inherit;
     font-size: 1em;
     font-weight: inherit;
     margin: 0;

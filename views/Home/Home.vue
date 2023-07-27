@@ -1,40 +1,63 @@
 <template>
-    <div class="container">
-        <h1 @click="handleClick">Click me</h1>
-        <p>Click count: <span>{{ count }}</span></p>
+    <div class="contain">
+        <View />
+        <div class="vertical-divider"></div>
+        <div class="editor" :style="{flexBasis: verticalDivider + '%'}">
+            <StyleEditor />
+            <div class="horizontal-divider"></div>
+            <Layers :horizontalDivider="horizontalDivider" />
+        </div>
     </div>
+    <Toolbar />
 </template>
 
 <script setup lang="ts">
+import Toolbar from "./components/Toolbar.vue";
+import View from "./components/View.vue";
+import StyleEditor from "./components/StyleEditor.vue";
+import Layers from "./components/Layers.vue";
+
 import { ref } from "vue";
 
-const count = ref(0);
+const horizontalDivider = ref(50);
+const verticalDivider = ref(20);
 
-const handleClick = (e:MouseEvent) => {
-    count.value++;
-};
 </script>
 
 <style scoped lang="scss">
-.container {
-    margin: auto;
-    font-size: 4em;
-    align-items: center;
-
-    h1 {
-        user-select: none;
-    }
-
-    p {
+    .contain {
         flex-direction: row;
-        gap: 0.25em;
-        font-size: 0.5em;
-        font-weight: 200;
-        font-style: italic;
+        flex-wrap: wrap;
+        flex-grow: 1;
+        align-self: stretch;
 
-        span {
-            font-style: normal;
+        .vertical-divider {
+            height: 100%;
+            flex-basis: 1em;
+            background-image: linear-gradient(to right, transparent 0em 0.4em, var(--dark) 0.4em 0.6em, transparent 0.6em 1em);
+            cursor: ew-resize;
+            z-index: 1;
+
+            &:hover, &:focus {
+                background-image: linear-gradient(to right, transparent 0em 0.3em, red 0.3em 0.7em, transparent 0.7em 1em);
+            }
+        }
+
+        .editor {
+            margin-left: -0.4em;
+            height: 100%;
+
+            .horizontal-divider {
+                width: 100%;
+                flex-basis: 1em;
+                background-image: linear-gradient(to bottom, transparent 0em 0.4em, var(--dark) 0.4em 0.6em, transparent 0.6em 1em);
+                cursor: ns-resize;
+                z-index: 1;
+
+                &:hover, &:focus {
+                    background-image: linear-gradient(to bottom, transparent 0em 0.3em, red 0.3em 0.7em, transparent 0.7em 1em);
+                }
+            }
         }
     }
-}
 </style>
