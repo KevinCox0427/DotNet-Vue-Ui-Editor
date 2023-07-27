@@ -14,10 +14,14 @@ declare global {
  */
 const store = reactive<{
     toolbarSelection: 'move' | 'select' | 'create' | 'text' | 'link' | 'image' | 'video' | 'preview',
-    objects: ElementObject[]
+    focusedElement: number[],
+    selectedElement: number[],
+    elements: ElementObject[]
 }>({
     toolbarSelection: 'move',
-    objects: [{
+    focusedElement: [],
+    selectedElement: [],
+    elements: [{
         name: 'First Object',
         menuColor: '#bec01f',
         styles: {
@@ -25,7 +29,25 @@ const store = reactive<{
             width: '100px',
             backgroundColor: '#bec01f',
         },
-        children: []
+        children: [{
+            name: 'Second Object',
+            menuColor: '#197f0c',
+            styles: {
+                height: '50px',
+                width: '50px',
+                backgroundColor: '#197f0c',
+            },
+            children: []
+        },{
+            name: 'Third Object',
+            menuColor: '#f0e3a7',
+            styles: {
+                height: '20px',
+                width: '20px',
+                backgroundColor: '#f0e3a7',
+            },
+            children: []
+        }]
     }]
 });
 

@@ -3,21 +3,20 @@
         class="layer"
         :data-position="props.position.join(':')"
         :style="setLayerStyles(el.menuColor, props.position)"
-        v-for="(el, i) in (reverse(store.objects) as ElementObject[])"
     >
-        <button><i class="fa-solid fa-caret-right"></i></button>
+        <button><i class="fa-solid fa-caret-down"></i></button>
         <input :value="el.name" />
         <button><i class="fa-solid fa-trash-can"></i></button>
     </div>
-    <Layer v-for="(el, i) in (reverse(props.el.children) as ElementObject[])" :el="el" :position="[...props.position, i]" />
+    <Layer
+        v-for="(el, i) in props.el.children.slice().reverse()"
+        :el="el"
+        :position="[...props.position, props.el.children.length - 1 - i]"
+    />
 </template>
 
 <script setup lang="ts">
 import { PropType } from 'vue';
-import store from '../store';
-import reverse from "lodash/reverse";
-
-const setLayerStyles = (menuColor:string, position:number[]) => `--menucolor: ${menuColor}; margin-left: ${(position.length-1)*2.5}em;`;
 
 const props = defineProps({
     el: {
@@ -29,6 +28,8 @@ const props = defineProps({
         required: true
     }
 });
+
+const setLayerStyles = (menuColor:string, position:number[]) => `--menucolor: ${menuColor}; margin-left: ${(position.length-1)*2.5}em;`;
 </script>
 
 <style lang="scss" scoped>
@@ -62,6 +63,7 @@ const props = defineProps({
             padding: 0.3em 0.2em;
             font-size: 1.35em;
             cursor: pointer;
+            transition: background-color 0.1s linear, color 0.1s linear, transform 0.1s linear;
 
             &:first-child {
                 font-size: 2em;

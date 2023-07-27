@@ -18,7 +18,7 @@
             <div class="horizontal-divider" @mousedown="startHorizonatlShift"></div>
             <div class="layers" :style="{flexBasis: horizontalDivider + '%'}">
                 <div class="absolute-wrapper">
-                    <Layer v-for="(el, i) in (reverse(store.objects) as ElementObject[])" :el="el" :position="[i]" />
+                    <Layer v-for="(el, i) in store.elements.slice().reverse()" :el="el" :position="[store.elements.length - 1 - i]" />
                 </div>
             </div>
         </div>
@@ -32,7 +32,6 @@ import View from "./components/View.vue";
 import StyleEditor from "./components/StyleEditor.vue";
 import Layer from "./components/Layer.vue";
 import store from "./store";
-import reverse from "lodash/reverse";
 
 import { ref } from "vue";
 
@@ -86,7 +85,7 @@ function startHorizonatlShift() {
             z-index: 1;
 
             &:hover, &:focus {
-                background-image: linear-gradient(to right, transparent 0em 0.3em, red 0.3em 0.7em, transparent 0.7em 1em);
+                background-image: linear-gradient(to right, transparent 0em 0.3em, var(--selectionColor) 0.3em 0.7em, transparent 0.7em 1em);
             }
         }
 
@@ -101,7 +100,7 @@ function startHorizonatlShift() {
                 z-index: 1;
 
                 &:hover, &:focus {
-                    background-image: linear-gradient(to bottom, transparent 0em 0.3em, red 0.3em 0.7em, transparent 0.7em 1em);
+                    background-image: linear-gradient(to bottom, transparent 0em 0.3em, var(--selectionColor) 0.3em 0.7em, transparent 0.7em 1em);
                 }
             }
 
@@ -114,8 +113,10 @@ function startHorizonatlShift() {
 
                 .absolute-wrapper {
                     position: absolute;
-                    display: block;
-                    height: calc(100% - 2em);
+                    display: flex;
+                    gap: 0.75em;
+                    height: fit-content;
+                    max-height: calc(100% - 2em);
                     width: calc(100% - 2em);
                     top: 0;
                     left: 0;
@@ -136,7 +137,7 @@ function startHorizonatlShift() {
                 cursor: ns-resize;
 
                 &:hover, &:focus {
-                background-image: linear-gradient(to bottom, transparent 0em 0.3em, red 0.3em 0.7em, transparent 0.7em 1em);
+                background-image: linear-gradient(to bottom, transparent 0em 0.3em, var(--selectionColor) 0.3em 0.7em, transparent 0.7em 1em);
             }
             }
         }

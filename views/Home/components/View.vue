@@ -7,7 +7,7 @@
         @mousedown="handleSelection"
     >
         <Element
-            v-for="(el, i) in store.objects"
+            v-for="(el, i) in store.elements"
             :el="el"
             :position="[i]"
         />

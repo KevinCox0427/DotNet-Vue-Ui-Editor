@@ -19,8 +19,9 @@
 
         .absolute-wrapper {
             position: absolute;
-            display: block;
-            height: calc(100% - 2em);
+            display: flex;
+            height: fit-content;
+            max-height: calc(100% - 2em);
             width: calc(100% - 2em);
             top: 0;
             left: 0;
