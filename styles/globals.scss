@@ -1,14 +1,20 @@
 :root {
     --body: sans-serif;
-    --dark: rgb(59, 59, 73);
-    --light: rgb(239, 238, 246);
+    --dark: #362e4f;
+    --darkOpacity: #3b3b4930;
+    --light: #efeef6;
 }
 
 head, style, script {
     display: none;
 }
 
+html {
+    min-height: 100%;
+}
+
 body {
+    flex-grow: 1;
     overflow-x: hidden;
     color: var(--dark);
     background-color: var(--light);
@@ -18,10 +24,14 @@ body {
 }
 
 #root {
+    flex-grow: 1;
     min-height: 100%;
+    background-image: url('/paper.jpeg');
+    background-size: 200px;
 }
 
 * {
+    position: relative;
     display: flex;
     flex-direction: column;
 }

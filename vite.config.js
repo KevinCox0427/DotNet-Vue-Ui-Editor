@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
-import { readdirSync, lstatSync, rmSync, writeFileSync } from 'fs';
+import { readdirSync, lstatSync, rmSync } from 'fs';
 
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+
 
 dotenv.config();
 
@@ -11,7 +12,8 @@ export default defineConfig(({ mode }) => {
   // Emptying public directory
   if(mode === 'client') rmSync('./dist/public', { recursive: true, force: true });
 
-  // Creating an entry object to only bundle the pages that are sent client side.
+  // Creating an entry object to transpile the files for server side rendering and bundle the pages that are sent client side.
+  // This will be ran different depending on the "mode"
   let entryObject = {};
   const viewsDirectory = `${process.env.viewsDirectory || 'views'}`;
   scanDirectory(viewsDirectory);
@@ -23,7 +25,8 @@ export default defineConfig(({ mode }) => {
   function scanDirectory(directory) {
     // Looping through each file/folder.
     readdirSync(directory).forEach(pointer => {
-      // If the file ends with .vue, then we must bundle it.
+      // If the mode is for a server build anything that ends in .vue must be tranpiled.
+      // If the mode 
       if(pointer.endsWith(mode === 'server' ? '.vue' : '.ts')) {
         // Adding this file to the entryObject with its file name.
         entryObject = {...entryObject, 
@@ -38,13 +41,18 @@ export default defineConfig(({ mode }) => {
   }
   
   return {
+    // Build configuration. This will be run twice, once to transpile the .vue files into js to be rendered on the server, and another time to bundle the .vue and .ts files that hydrate the client side.
     build: {
       outDir: mode === 'server' ? 'dist/views' : 'dist',
       emptyOutDir: false,
+      // This is what transpiles the .vue files into .js
       ssr: mode === 'server',
+      // A manifest file to keep track what the dependencies of each .vue file should be.
       manifest: mode === 'client',
       rollupOptions: {
+        // This points to different files depending on the mode.
         input: entryObject,
+        // Outing in commonjs vs es modules depending on the mode.
         output: mode === 'server' ? {
           format: 'cjs',
           entryFileNames: `[name].js`,
@@ -59,7 +67,8 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [vue()],
     mode: process.env.mode,
-    minify: process.env.mode === 'production' ? 'terser' : false,
+    minify: process.env.mode === 'production' ? 'esbuild' : false,
+    // This is for a hot module reload to develop the front-end in real-time.
     server: {
       hmr: true,
       port: process.env.PORT || 3000,

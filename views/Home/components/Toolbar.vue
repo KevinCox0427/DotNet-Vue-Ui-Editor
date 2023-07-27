@@ -1,11 +1,19 @@
 <template>
-    <div class="topbar">
+    <div
+        class="topbar"
+        :style="{
+            display: store.toolbarSelection === 'preview' ? 'none' : 'flex'
+        }"
+    >
         <div class="group">
             <button :class="{activated: store.toolbarSelection === 'move'}" @click="updateToolbarSelection('move')">
-                <i class="fa-solid fa-up-down-left-right"></i>
+                <i class="fa-solid fa-hand-pointer"></i>
+            </button>
+            <button :class="{activated: store.toolbarSelection === 'select'}" @click="updateToolbarSelection('select')">
+                <i class="fa-solid fa-expand"></i>
             </button>
             <button :class="{activated: store.toolbarSelection === 'create'}" @click="updateToolbarSelection('create')">
-                <i class="fa-solid fa-expand"></i>
+                <i class="fa-solid fa-pencil"></i>
             </button>
             <button :class="{activated: store.toolbarSelection === 'text'}" @click="updateToolbarSelection('text')">
                 <i class="fa-solid fa-paragraph"></i>
@@ -20,8 +28,16 @@
                 <i class="fa-solid fa-film"></i>
             </button>
         </div>
-        <input class="pagename" placeholder="Enter Title" />
         <div class="group">
+            <input class="pagename" placeholder="Enter Title" />
+        </div>
+        <div class="group">
+            <button>
+                <i class="fa-solid fa-gear"></i>
+            </button>
+            <button @click="updateToolbarSelection('preview')">
+                <i class="fa-solid fa-eye"></i>
+            </button>
             <button>
                 <i class="fa-solid fa-floppy-disk"></i>
             </button>
@@ -35,7 +51,7 @@
 <script setup lang="ts">
 import store from '../store';
 
-function updateToolbarSelection(selection: "move" | "create" | "text" | "link" | "image" | "video") {
+function updateToolbarSelection(selection: "move" | 'select' | "create" | "text" | "link" | "image" | "video" | "preview") {
     store.toolbarSelection = selection;
 }
 </script>
@@ -51,12 +67,19 @@ function updateToolbarSelection(selection: "move" | "create" | "text" | "link" |
         z-index: 1;
         overflow: hidden;
         padding: 0.2em 1em;
-        gap: 0 2em;
+        gap: 1em 2em;
         
         .group {
             flex-direction: row;
+            justify-content: center;
+            align-items: center;
             flex-wrap: wrap;
+            flex-grow: 1;
             gap: 0.3em;
+
+            &:nth-child(2) {
+                flex-grow: 1000;
+            }
 
             button {
                 font-size: 1.7em;
@@ -65,7 +88,7 @@ function updateToolbarSelection(selection: "move" | "create" | "text" | "link" |
                 border-radius: 0.2em;
                 transition: color 0.1s linear, background-color 0.1s linear, transform 0.1s linear;
 
-                &.activated, &:hover, &:focus {
+                &.activated, &:hover, &:focus-visible {
                     background-color: var(--dark);
                     color: var(--light);
                     transform: scale(1.16);
@@ -88,7 +111,7 @@ function updateToolbarSelection(selection: "move" | "create" | "text" | "link" |
                 font-weight: 400;
             }
 
-            &:hover, &:focus {
+            &:hover, &:focus-visible {
                 border-bottom: 0.15em solid;
             }
         }

@@ -3,15 +3,16 @@ import { Component, ComputedOptions, MethodOptions, createSSRApp } from 'vue';
 import { readFileSync } from 'fs';
 import { resolve } from 'path';
 
+// Getting the manifest file that's created at build time to declare what files are need for each page.
 const manifest = JSON.parse(readFileSync(resolve(__dirname, '../manifest.json')).toString());
 
 /**
  * This will structure an HTML document to render the supplied component.
  * 
  * @param component The component to be rendered.
- * @param componentName The name of the component so it can reqeust the hydration script.
- * @param stylePaths (Optional) Paths to any linked styles
- * @param scriptPaths (Optional) Paths to any linked scripts
+ * @param componentName The path of the component file so it can reqeust the hydration script and dependencies from the manifest file.
+ * @param stylePaths (Optional) Paths to any additional styles
+ * @param scriptPaths (Optional) Paths to any additional scripts
  * @param ServerData (Optional) Allows us to pass any properties from the server to the client. This is done by parsing it into a JSON string and attaching it to the client's window.
  * @param seoOptions (Optional) Decides how to render the meta tags in the header for SEO purposes.
  */
@@ -23,7 +24,7 @@ async function serveHTML(component: Component<any, any, any, ComputedOptions, Me
     image: '',
     favicon: '#'
 }) {
-    // Getting the file data in the manifest to attach any additional styles or scripts.
+    // Getting the file data in the manifest to attach any dependencies.
     const fileMetaData = manifest[componentPath];
     if(!fileMetaData) return 'File path was not found.';
 
@@ -46,6 +47,7 @@ async function serveHTML(component: Component<any, any, any, ComputedOptions, Me
             <link rel="stylesheet" type="text/css" href="/globals.css" />
             ${fileMetaData.css ? fileMetaData.css.map((file:string) => `<link rel="stylesheet" type="text/css" href="${file.replace('public', '')}" />`) : ''}
             ${fileMetaData.imports ? fileMetaData.imports.map((file:string) => `<script type="module" href="${manifest[file].file.replace('public', '')}"></script>`) : ''}
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
             ${stylePaths.map(path => `<link rel="stylesheet" type="text/css" href="${path}" />`).join('')}
             ${scriptPaths.map(path => `<script src="${path}"></script>`).join('')}
         </head>
