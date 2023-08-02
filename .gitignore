@@ -1,4 +1,6 @@
 appsettings.json
+wwwroot/js
+wwwroot/css
 .vscode
 .DS_Store
 
