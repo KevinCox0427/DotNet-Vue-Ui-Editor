@@ -1,22 +1,24 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotnet.Models;
 
 /**
- *   
+ * 
  */
 public class Page {
     [Key]
     public int Id { get; set; }
     
-    [Required]
+    [Required] [FromBody]
     public string Name { get; set; }
 
+    [BindNever]
     public ICollection<Element> Elements { get; set; } = new List<Element>();
 }
-
 public class Element {
     [Key]
     public int Id { get; set; }

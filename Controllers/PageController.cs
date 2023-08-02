@@ -17,10 +17,13 @@ public class PageController : Controller
         _db = db;
     }
 
-    public IActionResult Index() {
-        IEnumerable<Page> pages = _db.Pages
+    [HttpGet("{id}")]
+    public IActionResult Index(int id) {
+        Page pages = _db.Pages
+            .Where(p => p.Id == id)
             .Include(p => p.Elements)
-            .ThenInclude(e => e.Styles);
+            .ThenInclude(e => e.Styles)
+            .First();
 
         ViewData["Title"] = "Home";
         ViewData["PageProps"] = JsonConvert.SerializeObject(pages, new JsonSerializerSettings(){ 
@@ -28,5 +31,10 @@ public class PageController : Controller
         });
 
         return View(pages);
+    }
+
+    [HttpPost("")]
+    public Page Save([FromBody] Page page) {
+        return page;
     }
 }

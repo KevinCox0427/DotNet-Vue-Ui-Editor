@@ -32,10 +32,6 @@ app.UseCors("Origins");
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "",
-    defaults: new { controller="Page", action="Index" }
-);
+app.MapControllers();
 
 app.Run();
